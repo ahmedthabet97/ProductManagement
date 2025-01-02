@@ -1,0 +1,72 @@
+<div class="container">
+    <div class="col-12">
+        <!-- Button to navigate to Create Product page -->
+        <a class="btn btn-success" routerLink="/create">Create New Product</a>
+    </div>
+    <label for="minPrice">Min Price:</label>
+    <input type="number" id="minPrice" [(ngModel)]="minPrice" />
+
+    <label for="maxPrice">Max Price:</label>
+    <input type="number" class="input" id="maxPrice" [(ngModel)]="maxPrice" />
+
+    <button class="btn btn-primary" (click)="onSearch()">Filter</button>
+    <div class="row">
+        <div class="p-4">
+            <!-- Search Box -->
+            <input [(ngModel)]="searchQuery" (input)="onSearch()" type="text" placeholder="Search by product name"
+                class="p-2 mb-4 border rounded w-full" />
+            <div *ngIf="loading">Loading...</div>
+
+            <!-- Products Table with Pagination and Sorting -->
+            <p-table [value]="filteredProducts" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[5, 10, 20]"
+                sortMode="multiple">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="id">
+                            ID <p-sortIcon field="id"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="name">
+                            Name <p-sortIcon field="name"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="description">
+                            Description <p-sortIcon field="description"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="price">
+                            Price <p-sortIcon field="price"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="createdDate">
+                            Created Date <p-sortIcon field="createdDate"></p-sortIcon>
+                        </th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-product>
+                    <tr>
+                        <td>{{ product.id }}</td>
+                        <td>{{ product.name }}</td>
+                        <td>{{ product.description }}</td>
+                        <td>{{ product.price | currency }}</td>
+                        <td>{{ product.createdDate | date }}</td>
+
+                        <!-- Edit Button -->
+                        <td>
+                            <button class="btn btn-secondary m-2" [routerLink]="['/edit', product.id]">
+                                Edit
+                            </button>
+                        </td>
+
+                        <!-- Delete Button -->
+                        <td>
+                            <button class="btn btn-danger m-2" (click)="deleteProduct(product.id)">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+
+        </div>
+    </div>
+</div>
